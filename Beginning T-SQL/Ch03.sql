@@ -136,7 +136,7 @@ FROM #DateTimeExample
 WHERE MyDate > '2009-01-02' AND MyDate < '2009-01-04'
 */
 
-
+/*
 -- Listing 3-12 IN
 --1
 SELECT BusinessEntityID, FirstName, MiddleName, LastName
@@ -152,6 +152,45 @@ WHERE TerritoryID IN (2,1,4,5)
 SELECT TerritoryID, Name
 FROM Sales.SalesTerritory
 WHERE TerritoryID NOT IN (2,1,4,5)
+*/
+
+/*
+-- Listing 3-13. An Example Illustrating NULL
+SELECT MiddleName
+FROM Person.Person
+WHERE MiddleName != 'B';
+
+-- including NULL
+SELECT MiddleName
+FROM Person.Person
+WHERE MiddleName != 'B'
+	OR MiddleName IS NULL;
+*/
+
+/*
+-- Listing 3-14 ORDER BY
+SELECT ProductID, LocationID
+FROM Production.ProductInventory
+ORDER BY ProductID, LocationID DESC;
+
+SELECT BusinessEntityID, 1 as X, LastName, FirstName, MiddleName
+FROM Person.Person
+ORDER BY LastName 
+*/
 
 
+-- Listing 3-15 View Executaion Plans
+--1
+SELECT LastName, FirstName
+FROM Person.Person
+WHERE LastName = 'Smith';
 
+--2
+SELECT LastName, FirstName
+FROM Person.Person
+WHERE FirstName = 'Ken';
+
+--3
+SELECT ModifiedDate
+FROM Person.Person
+WHERE ModifiedDate BETWEEN '2011-01-01' AND '2011-12-31';

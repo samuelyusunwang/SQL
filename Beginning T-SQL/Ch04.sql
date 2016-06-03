@@ -225,7 +225,7 @@ SELECT DATEDIFF(year, '12/31/2008', '1/1/2009') AS YearDiff,
 	DATEDIFF(d, '12/31/2008', '1/1/2009') AS DayDiff;
 */
 
-
+/*
 -- Listing 4-18 DATEPART, DATENAME
 --1
 SELECT OrderDate, DATEPART(year, OrderDate) AS OrderYear,
@@ -249,15 +249,42 @@ SELECT OrderDate, YEAR(OrderDate) AS OrderYear,
 	DAY(OrderDate) AS OrderDay
 FROM Sales.SalesOrderHeader
 WHERE SalesOrderID in (43659, 43714, 60621);
+*/
+
+/*
+-- Listing 4-20. Using CONVERT 
+--1 The hard way
+SELECT CAST(DATEPART(YYYY, GETDATE()) AS VARCHAR) + '/' +
+	CAST(DATEPART(MM, GETDATE()) AS VARCHAR) + '/' +
+	CAST(DATEPART(DD, GETDATE()) AS VARCHAR) AS DateCast;
+
+--2 Easy way
+SELECT CONVERT(VARCHAR, GETDATE(), 111) AS DateConvert;
+
+--3
+SELECT CONVERT(VARCHAR, OrderDate, 1) AS "1",
+	CONVERT(VARCHAR, OrderDate, 101) AS "101",
+	CONVERT(VARCHAR, OrderDate, 2) AS "2",
+	CONVERT(VARCHAR, OrderDate, 102) AS "102"
+FROM Sales.SalesOrderHeader
+WHERE SalesOrderID in (43659, 43714, 60621)
+*/
 
 
+/*
+--Listing 4-21
+DECLARE @d DATETIME = GETDATE();
 
+SELECT FORMAT( @d, 'dd', 'en-US' ) AS Result;
+SELECT FORMAT( @d, 'yyyy-M-d' ) AS Result;
+SELECT FORMAT( @d, 'MM/dd/yyyy', 'en-US' ) AS Result;
+*/
 
-
-
-
-
-
+/*
+SELECT EOMONTH(GETDATE()) AS [End of this month],
+	EOMONTH(GETDATE(),1) AS [End of next month],
+	EOMONTH('2009-01-01') AS [Another month];
+*/
 
 
 

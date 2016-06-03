@@ -56,12 +56,31 @@ FROM Production.Product
 */
 
 
+-- Ex 4-4
+--1
+SELECT SalesOrderID, OrderDate, ShipDate,
+	DATEDIFF(day, OrderDate, ShipDate)  AS DayDiff
+FROM Sales.SalesOrderHeader
 
+--2 
+SELECT SalesOrderID, CONVERT(VARCHAR, OrderDate, 111) AS OrderDate, CONVERT(VARCHAR, ShipDate, 111) AS ShipDate,
+	DATEDIFF(day, OrderDate, ShipDate)  AS DayDiff
+FROM Sales.SalesOrderHeader
 
+--3
+SELECT SalesOrderID, OrderDate, ShipDate,
+	DATEADD(month, 6, OrderDate)  AS OrderDatePlus6M
+FROM Sales.SalesOrderHeader
 
+--4
+SELECT SalesOrderID, OrderDate, ShipDate,
+	YEAR(OrderDate) AS OrderYear, MONTH(OrderDate) AS OrderMonth
+FROM Sales.SalesOrderHeader
 
-
-
+--4
+SELECT SalesOrderID, OrderDate, ShipDate,
+	YEAR(OrderDate) AS OrderYear, MONTH( AS OrderMonth
+FROM Sales.SalesOrderHeader
 
 
 

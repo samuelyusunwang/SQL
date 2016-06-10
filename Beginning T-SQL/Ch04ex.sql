@@ -56,6 +56,7 @@ FROM Production.Product
 */
 
 
+/*
 -- Ex 4-4
 --1
 SELECT SalesOrderID, OrderDate, ShipDate,
@@ -79,8 +80,62 @@ FROM Sales.SalesOrderHeader
 
 --4
 SELECT SalesOrderID, OrderDate, ShipDate,
-	YEAR(OrderDate) AS OrderYear, MONTH( AS OrderMonth
+	YEAR(OrderDate) AS OrderYear, DATENAME(MONTH, OrderDate) As OrderMonth
 FROM Sales.SalesOrderHeader
+*/
 
+/*
+--Ex 4.5
+--1
+SELECT SalesOrderID, SubTotal, 
+	ROUND(SubTotal,2) AS SubTotal1,
+	CAST(ROUND(SubTotal,0) AS DECIMAL(10,1)) AS SubTotal2, 
+	SQRT(SalesOrderID) AS SQRT_ID, 
+	RAND()*9 + 1 AS Rand_1_10
+FROM Sales.SalesOrderHeader
+*/
 
+/*
+--Ex 4.6
+SELECT BusinessEntityID,
+	CASE WHEN BusinessEntityID % 2 = 1 THEN 'ODD'
+		 WHEN BusinessEntityID % 2 = 0 THEN 'Even'
+	END AS ID_Type
+FROM HumanResources.Employee;
 
+SELECT SalesOrderID, OrderQty,
+	CASE WHEN OrderQty < 10 THEN 'Under 10'
+		 WHEN OrderQty >=10 AND OrderQty < 20 THEN '10-19'
+		 WHEN OrderQty >= 20 AND OrderQty < 30 THEN '20-29'
+		 WHEN OrderQty >= 30 AND OrderQty < 40 THEN '30-39'
+		 ELSE '40 and over'
+	END AS OrderQty_Group
+FROM Sales.SalesOrderDetail;
+
+SELECT Title, FirstName, MiddleName, LastName, Suffix,
+	COALESCE(Title + ' ', '') + COALESCE(FirstName + ' ', '') + COALESCE(MiddleName + ' ', '') 
+	+ COALESCE(LastName + ' ', '') + COALESCE(Suffix, '') AS FullName
+FROM Person.Person;
+
+SELECT SERVERPROPERTY('Edition'), 
+	SERVERPROPERTY('InstanceName'), 
+	SERVERPROPERTY('MachineName');
+*/
+
+-- Ex 4.7
+SELECT SalesOrderID, OrderDate
+FROM Sales.SalesOrderHeader
+WHERE YEAR(OrderDate) = 2011;
+
+SELECT SalesOrderID, OrderDate
+FROM Sales.SalesOrderHeader
+ORDER BY MONTH(OrderDate), YEAR(OrderDate);
+
+SELECT PersonType, FirstName, MiddleName, LastName
+FROM Person.Person
+ORDER BY PersonType, 
+	CASE WHEN PersonType IN ('IN', 'SP', 'SC') THEN LastName
+		 ELSE FirstName
+	END
+	
+	

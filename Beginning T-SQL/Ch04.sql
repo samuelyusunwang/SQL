@@ -286,13 +286,163 @@ SELECT EOMONTH(GETDATE()) AS [End of this month],
 	EOMONTH('2009-01-01') AS [Another month];
 */
 
+/*
+--MATH
+SELECT ABS(2) AS "2", ABS(-2) AS "-2"
+
+--Listing 4-23 POWER()
+SELECT POWER(10,1) AS "Ten to the First",
+	POWER(10,2) AS "Ten to the Second",
+	POWER(10,3) AS "Ten to the Third";
+
+--Listing 4-24 SQUARE(), SQRT()
+SELECT SQUARE(10) AS "Square of 10",
+	SQRT(10) AS "Square root of 10",
+	SQRT(SQUARE(10)) AS "The Square Root fo the Square of 10";
+
+--Listing 4-25
+SELECT ROUND(1234.1294, 2) AS "2 places on the right",
+	ROUND(1254.1294, -2) AS "2 places on the left",
+	ROUND(1234.1294, 2, 1) AS "Truncate 2",
+	ROUND(1254.1294, -2, 1) AS "Truncate -2";	
+*/
+
+/*
+--Listing 4-26
+SELECT CAST(RAND() * 100 AS INT) + 1 AS "1 to 100",
+	CAST(RAND() * 1000 AS INT) + 900 AS "900 to 1900",
+	CAST(RAND() * 5 AS INT) + 1 AS "1 to 5";
+
+SELECT RAND(3), RAND(), RAND();
+
+SELECT RAND(), RAND(), RAND()
+FROM sys.objects;
+*/
+
+/*
+--Listing 4-27 CASE
+SELECT BusinessEntityID, Title,
+	CASE Title
+		WHEN 'Mr.' Then 'Male'
+		WHEN 'Ms.' THEN 'Female'
+		WHEN 'Mrs.' THEN 'Female'
+		WHEN 'Miss' THEN 'Female'
+		ELSE 'Unknown'
+	END AS Gender
+FROM Person.Person
+WHERE BusinessEntityID IN (1,5,6,357,358,11621,423)
+*/
+
+/*
+-- Listing 4-28 CASE
+SELECT BusinessEntityID, Title,
+	CASE WHEN Title in ('Ms.', 'Mrs.', 'Miss') Then 'Female'
+		 WHEN Title = 'Mr.' THEN 'Male'
+		 ELSE 'Unknown'
+	END AS Gender
+FROM Person.Person
+WHERE BusinessEntityID IN (1,5,6,357,358,11621,423);
+
+-- Listing 4-29 CASE
+SELECT VacationHours, SickLeaveHours,
+	CASE WHEN VacationHours > SickLeaveHours THEN VacationHours
+		ELSE SickLeaveHours
+	END AS "More Hours"
+FROM HumanResources.Employee;
+*/
+
+/*
+--Listing 4-30 IIF
+--1
+SELECT IIF(50>20, "TRUE", "FALSE") AS RESULT;
+
+DECLARE @a INT = 50
+DECLARE @b INT = 25
+SELECT IIF (@a > @b, "TRUE", "FALSE") AS RESULT;
+*/
+
+/*
+-- Listing 4-31 COALESCE
+SELECT ProductID, Size, Color,
+	COALESCE(Size, Color, 'No Color or Size') AS 'Description'
+FROM Production.Product
+WHERE ProductID in (1,2, 317, 320, 680, 706);
+
+-- Listing 4-32. Admin function
+SELECT DB_NAME() AS "Database Name",
+	HOST_NAME() AS "Host Name",
+	CURRENT_USER AS "Current User",
+	SUSER_NAME() AS "Login",
+	USER_NAME() AS "User Name",
+	APP_NAME() AS "App Name";
+*/
+
+/*
+-- Listing 4-33
+SELECT FirstName
+FROM Person.Person
+WHERE CHARINDEX('ke',FirstName) > 0;
+
+SELECT LastName, REVERSE(LastName)
+FROM Person.Person
+ORDER BY REVERSE(LastName);
+
+SELECT BirthDate
+FROM HumanResources.Employee
+ORDER BY YEAR(BirthDate)
+*/
+
+/*
+--Listing 4-34
+DECLARE @Rows INT = 2;
+SELECT TOP(@Rows) PERCENT CustomerID, OrderDate, SalesOrderID
+FROM Sales.SalesOrderHeader
+ORDER BY SalesOrderID;
+
+SELECT TOP(2) CustomerID, OrderDate, SalesOrderID
+FROM Sales.SalesOrderHeader
+ORDER BY OrderDate;
+
+SELECT TOP(2) WITH TIES CustomerID, OrderDate, SalesOrderID
+FROM Sales.SalesOrderHeader
+ORDER BY OrderDate;
+
+SELECT TOP(2) WITH TIES CustomerID, OrderDate, SalesOrderID
+FROM Sales.SalesOrderHeader
+ORDER BY NEWID();
+*/
+
+/*
+-- Add an index
+IF EXISTS (SELECT * FROM sys.indexes WHERE object_id = 
+	OBJECT_ID(N'[Sales].[SalesOrderHeader]')
+	AND name = N'DEMO_SalesOrderHeader_OrderDate')
+DROP INDEX [DEMO_SalesOrderHeader_OrderDate]
+	ON [Sales].[SalesOrderHeader] WITH (ONLINE = OFF);
+GO
+
+CREATE NONCLUSTERED INDEX [DEMO_SalesOrderHeader_OrderDate]
+	ON [Sales].[SalesOrderHeader]
+([OrderDate] ASC);
+*/
 
 
+--Remove Index
+IF EXISTS (SELECT * FROM sys.indexes WHERE object_id = 
+	OBJECT_ID(N'[Sales].[SalesOrderHeader]')
+	AND name = N'DEMO_SalesOrderHeader_OrderDate')
+DROP INDEX [DEMO_SalesOrderHeader_OrderDate]
+	ON [Sales].[SalesOrderHeader] WITH (ONLINE=OFF);
 
 
+-- Listing 4-35
+--1 
+SELECT SalesOrderID, OrderDate
+FROM Sales.SalesOrderHeader
+WHERE OrderDate >= '2011-01-01 00:00:00'
+	AND OrderDate <= '2012-01-01 00:00:00';
 
-
-
-
-
-
+--2 
+SELECT SalesOrderID, OrderDate
+FROM Sales.SalesOrderHeader
+WHERE YEAR(OrderDate) = 2011;

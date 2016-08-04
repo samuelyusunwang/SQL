@@ -62,7 +62,7 @@ FROM Sales.SalesOrderHeader AS SOH
 WHERE Cust.CustomerID = SOH.CustomerID) AS A;
 */
 
-
+/*
 -- Listing 6-6 Using UNION
 --1 
 SELECT BusinessEntityID AS ID
@@ -84,4 +84,94 @@ UNION ALL
 SELECT SalesOrderID
 FROM Sales.SalesOrderHeader
 ORDER BY ID;
+*/
+
+
+-- Incompatible types
+--SELECT 1
+--UNION ALL
+--SELECT 'a'
+
+--SELECT 1
+--UNION ALL
+--SELECT 1, 2
+
+/*
+-- Listing 6-7 EXCEPT / INTERSECT
+--1
+SELECT BusinessEntityID AS ID
+FROM HumanResources.Employee
+EXCEPT
+SELECT BusinessEntityID
+FROM Person.Person;
+--2
+SELECT BusinessEntityID AS ID
+FROM HumanResources.Employee
+INTERSECT
+SELECT BusinessEntityID
+FROM Person.Person
+*/
+
+/*
+-- Listing 6-8 Using a Derived Table
+SELECT c.CustomerID, s.SalesOrderID
+FROM Sales.Customer AS c
+INNER JOIN 
+(SELECT SalesOrderID, CustomerID
+ FROM Sales.SalesOrderHeader) AS s 
+ON c.CustomerID = s.CustomerID
+*/
+
+/*
+-- Listing 6-9 Using CTE
+--1
+;WITH orders AS (
+	SELECT SalesOrderID, CustomerID, TotalDue + Freight AS Total
+	FROM Sales.SalesOrderHeader
+	)
+SELECT * FROM orders;
+--2
+;WITH orders ([Order ID], [Customer ID], Total)
+AS (SELECT SalesOrderID, CustomerID, TotalDue + Freight
+	FROM Sales.SalesOrderHeader
+	)
+SELECT * FROM orders;
+*/
+
+/*
+-- Lisiting 6-10
+--1
+SELECT c.CustomerID, s.SalesOrderID, s.OrderDate
+FROM Sales.Customer AS c
+LEFT OUTER JOIN 
+Sales.SalesOrderHeader AS s
+ON c.CustomerID = s.CustomerID
+WHERE s.OrderDate = '2011/07/01'
+--2
+;WITH orders AS (
+	SELECT SalesOrderID, CustomerID, OrderDate
+	FROM Sales.SalesOrderHeader
+	WHERE OrderDate = '2011/07/01'
+	)
+SELECT c.CustomerID, orders.SalesOrderID, orders.OrderDate
+FROM Sales.Customer AS c
+LEFT OUTER JOIN orders ON c.CustomerID = orders.CustomerID
+ORDER BY orders.OrderDate DESC;
+*/
+
+
+-- Listing 6-11
+
+
+
+
+
+
+
+
+
+
+
+
+
 

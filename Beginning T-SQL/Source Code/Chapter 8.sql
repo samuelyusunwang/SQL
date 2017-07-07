@@ -1,3 +1,7 @@
+USE AdventureWorks2014;
+GO
+
+
 --Listing 8-1. Using the Ranking Functions    
 --1    
 SELECT CustomerID,        
